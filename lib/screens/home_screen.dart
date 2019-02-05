@@ -29,50 +29,52 @@ class _HomeScreenState extends State<HomeScreen> {
       print(e);
     }
   }
-  
-  Widget _buildDrawer(){
+
+  Widget _buildDrawer() {
     return new Drawer(
-      child: new ListView(
-        children: <Widget>[
-          UserAccountsDrawerHeader(
-            accountName: Text('name'),
-            accountEmail: Text('email'),
-            currentAccountPicture: Text('picture'),
-          ),
-          new ListTile(
-            title: Text('Obserwowane'),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.push(context, MaterialPageRoute(
-                builder: (BuildContext context) => new CarListScreen()
-              ));
-            },
-          ),
-          new Divider(),
-          new ListTile(
-            title: Text('Settings'),
-          ),
-          new ListTile(
-            title: Text('Feedback'),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.push(context, MaterialPageRoute(
-                builder: (BuildContext context) => new AboutScreen()
-              ));
-            },
-          ),
-          new ListTile(
-            title: Text('Help'),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.push(context, MaterialPageRoute(
-                builder: (BuildContext context) => new AboutScreen()
-              ));
-            },
-          )
-        ],
-      )
-    );
+        child: new ListView(
+      children: <Widget>[
+        UserAccountsDrawerHeader(
+          accountName: Text('name'),
+          accountEmail: Text('email'),
+          currentAccountPicture: Text('picture'),
+        ),
+        new ListTile(
+          title: Text('Obserwowane'),
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => new CarListScreen()));
+          },
+        ),
+        new Divider(),
+        new ListTile(
+          title: Text('Settings'),
+        ),
+        new ListTile(
+          title: Text('Feedback'),
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => new AboutScreen()));
+          },
+        ),
+        new ListTile(
+          title: Text('Help'),
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => new AboutScreen()));
+          },
+        )
+      ],
+    ));
   }
 
   @override

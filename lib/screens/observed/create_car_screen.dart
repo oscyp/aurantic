@@ -1,24 +1,22 @@
 import 'dart:convert';
 
+import 'package:aurantic/helpers/api.dart';
 import 'package:aurantic/models/car.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:aurantic/helpers/constants.dart' as constants;
 
-class CreateCarScreen extends StatefulWidget{
+class CreateCarScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new _CreateCarScreen();
-
+  State<StatefulWidget> createState() => new _CreateCarScreenState();
 }
 
-class _CreateCarScreen extends State<CreateCarScreen>{
+class _CreateCarScreenState extends State<CreateCarScreen> {
   final formKey = new GlobalKey<FormState>();
+  final scaffoldState = new GlobalKey<ScaffoldState>();
   Car car = new Car();
-  
 
-
-
-  Widget _registration(){
+  Widget _registration() {
     return TextFormField(
       keyboardType: TextInputType.text,
       autofocus: true,
@@ -27,12 +25,13 @@ class _CreateCarScreen extends State<CreateCarScreen>{
         hasFloatingPlaceholder: true,
         labelText: 'Numer rejestracyjny',
       ),
-      validator: (value) => value.isEmpty ? 'Numer rejestrcyjny nie może być pusty' : null,
-      onSaved: (value) => car.licensePlate = value, 
+      validator: (value) =>
+          value.isEmpty ? 'Numer rejestrcyjny nie może być pusty' : null,
+      onSaved: (value) => car.licensePlate = value,
     );
   }
 
-  Widget _mark(){
+  Widget _mark() {
     return TextFormField(
       keyboardType: TextInputType.text,
       autofocus: true,
@@ -46,7 +45,7 @@ class _CreateCarScreen extends State<CreateCarScreen>{
     );
   }
 
-  Widget _model(){
+  Widget _model() {
     return TextFormField(
       keyboardType: TextInputType.text,
       autofocus: true,
@@ -60,7 +59,7 @@ class _CreateCarScreen extends State<CreateCarScreen>{
     );
   }
 
-  Widget _color(){
+  Widget _color() {
     return TextFormField(
       keyboardType: TextInputType.text,
       autofocus: true,
@@ -74,13 +73,21 @@ class _CreateCarScreen extends State<CreateCarScreen>{
     );
   }
 
-  void _validateAndSubmit(){
+  void _validateAndSubmit() {
     if (_validateAndSave()) {
-      _registerCar();
+      final future = API.registerCar(car);
+
+      future.then((result) {
+        if (result) {
+          showSnackBarr("Udało się.");
+        } else {
+          showSnackBarr("błąd zapisu.");
+        }
+      });
     }
   }
 
-  bool _validateAndSave(){
+  bool _validateAndSave() {
     final form = formKey.currentState;
 
     if (form.validate()) {
@@ -90,21 +97,19 @@ class _CreateCarScreen extends State<CreateCarScreen>{
     return false;
   }
 
-  Future<void> _registerCar() async {
-    await http.post(constants.API_URL + "Cars/Register",
-    body: json.encode(car),
-    headers: {"Content-Type": "application/json"});
+  void showSnackBarr(String text) {
+    final snackBar = SnackBar(content: Text(text));
+    scaffoldState.currentState.showSnackBar(snackBar);
   }
 
-
-  Widget _addButton(){
-    return MaterialButton(
-      child: Text("Dodaj"),
-      onPressed: _validateAndSubmit);
+  Widget _addButton() {
+    return MaterialButton(child: Text("Dodaj"), onPressed: _validateAndSubmit);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldState,
       appBar: AppBar(
         title: Text('Dodaj nowy'),
       ),
@@ -128,5 +133,4 @@ class _CreateCarScreen extends State<CreateCarScreen>{
       ),
     );
   }
-
 }

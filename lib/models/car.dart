@@ -3,14 +3,14 @@ import 'package:json_annotation/json_annotation.dart';
 part 'car.g.dart';
 
 @JsonSerializable(nullable: false)
-class Car{
+class Car {
   String licensePlate;
   String mark;
   String model;
   String color;
 
   Car();
-  Car.withRegistration(String registration){
+  Car.withRegistration(String registration) {
     this.licensePlate = registration;
   }
 
