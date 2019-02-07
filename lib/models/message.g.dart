@@ -9,8 +9,10 @@ part of 'message.dart';
 Message _$MessageFromJson(Map<String, dynamic> json) {
   return Message()
     ..message = json['message'] as String
-    ..carId = json['carId'] as int;
+    ..licensePlate = json['licensePlate'] as String;
 }
 
-Map<String, dynamic> _$MessageToJson(Message instance) =>
-    <String, dynamic>{'message': instance.message, 'carId': instance.carId};
+Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
+      'message': instance.message,
+      'licensePlate': instance.licensePlate
+    };

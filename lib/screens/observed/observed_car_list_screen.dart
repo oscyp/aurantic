@@ -5,14 +5,15 @@ import 'package:aurantic/models/car.dart';
 import 'package:aurantic/screens/about_screen.dart';
 import 'package:aurantic/screens/observed/create_car_screen.dart';
 import 'package:aurantic/screens/observed/widgets/car_tile.dart';
+import 'package:aurantic/screens/observed/widgets/observed_car_tile.dart';
 import 'package:flutter/material.dart';
 
-class CarListScreen extends StatefulWidget {
+class ObservedCarListScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _CarListScreenState();
+  State<StatefulWidget> createState() => _ObservedCarListScreenState();
 }
 
-class _CarListScreenState extends State<CarListScreen> {
+class _ObservedCarListScreenState extends State<ObservedCarListScreen> {
   var cars = new List<Car>();
   var loaded = false;
   initState() {
@@ -59,7 +60,7 @@ class _CarListScreenState extends State<CarListScreen> {
     return ListView.builder(
       itemCount: cars.length,
       itemBuilder: (context, int) {
-        return CarTile(car: cars[int]);
+        return ObservedCarTile(car: cars[int]);
       },
     );
   }

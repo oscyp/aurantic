@@ -12,8 +12,6 @@ class CarTile extends StatelessWidget {
     return ListTile(
         title: Text('${car.licensePlate}'),
         subtitle: Text('${car.mark}, ${car.model}'),
-        leading: Text('leading'),
-        trailing: Text('trailing'),
         onTap: () {
           Navigator.push(
               context,

@@ -1,5 +1,5 @@
 import 'package:aurantic/models/car.dart';
-import 'package:aurantic/screens/observed/car_fault_report_screen.dart';
+import 'package:aurantic/screens/observed/fault_report_screen.dart';
 import 'package:flutter/material.dart';
 
 class CarScreen extends StatelessWidget {
@@ -44,11 +44,11 @@ class CarScreen extends StatelessWidget {
                   child: const Text("Zgłoś usterkę"),
                   onPressed: () {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => CarFaultReportScreen(car.licensePlate)));
-                  }
-                ),
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                FaultReportScreen()));
+                  }),
               FlatButton(
                   child: const Text("Coś tam jeszcze"), onPressed: () => {})
             ],
