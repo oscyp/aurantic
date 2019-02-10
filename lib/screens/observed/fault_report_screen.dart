@@ -1,6 +1,7 @@
 import 'package:aurantic/helpers/api.dart';
 import 'package:aurantic/models/message.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class FaultReportScreen extends StatefulWidget {
   FaultReportScreen();
@@ -35,6 +36,43 @@ class _FaultReportScreenState extends State<FaultReportScreen> {
       onSaved: (value) => message.licensePlate = value,
     );
   }
+
+  Widget _photoCarousel(){
+    return Container(
+      margin: const EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(3.0),
+      height: 60,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black)
+      ),
+      child: Text('corousela todo'),
+    );
+  }
+
+  Widget _reportType(){
+
+  }
+
+  Widget _location(){
+    return Column(
+      children: <Widget>[
+        Container(
+          // height: 150,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          // width: 100,
+          child: GoogleMap(
+            onMapCreated: (GoogleMapController controller) {}, 
+            initialCameraPosition: CameraPosition(
+              target: LatLng(37.4219999, -122.0862462
+              )
+            ),
+          ),
+        )
+      ]
+    );
+  }
+
   Widget _message() {
     return TextFormField(
       maxLines: 7,
@@ -78,7 +116,15 @@ class _FaultReportScreenState extends State<FaultReportScreen> {
           child: Form(
             key: formKey,
             child: ListView(
-              children: <Widget>[_licensePlate(), Divider(), _message(), _saveButton()],
+              children: <Widget>[
+                _licensePlate(),
+                _photoCarousel(),
+                // _reportType(),
+                _location(),
+                // Divider(),
+                _message(),
+                _saveButton()
+                ],
             ),
           ),
         ));

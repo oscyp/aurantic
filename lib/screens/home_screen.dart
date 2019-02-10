@@ -59,9 +59,10 @@ class _HomeScreenState extends State<HomeScreen> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.star), title: Text('Observed')),
-          BottomNavigationBarItem(icon: Icon(Icons.list), title: Text('Listt')),
+          BottomNavigationBarItem(icon: Icon(Icons.list), title: Text('Lista')),
           BottomNavigationBarItem(icon: Icon(Icons.report), title: Text('Report')),
           BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('Profile')),
         ],
