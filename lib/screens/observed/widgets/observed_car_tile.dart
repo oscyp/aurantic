@@ -7,15 +7,15 @@ class ObservedCarTile extends StatelessWidget {
   final notificationNumber = const [
     [0, null],
     [1, Icons.filter_1],
-    [2,Icons.filter_2],
-    [3,Icons.filter_3],
-    [4,Icons.filter_4],
-    [5,Icons.filter_5],
-    [6,Icons.filter_6],
-    [7,Icons.filter_7],
-    [8,Icons.filter_8],
-    [9,Icons.filter_9],
-    [10,Icons.filter_9_plus]
+    [2, Icons.filter_2],
+    [3, Icons.filter_3],
+    [4, Icons.filter_4],
+    [5, Icons.filter_5],
+    [6, Icons.filter_6],
+    [7, Icons.filter_7],
+    [8, Icons.filter_8],
+    [9, Icons.filter_9],
+    [10, Icons.filter_9_plus]
   ];
   const ObservedCarTile({this.car});
 
@@ -24,12 +24,10 @@ class ObservedCarTile extends StatelessWidget {
     return ListTile(
         title: Text('${car.licensePlate}'),
         subtitle: Text('${car.mark}, ${car.model}'),
-        trailing: Column(
-          children: <Widget>[
-            IconButton(icon: Icon(Icons.filter_1)),
-            IconButton(icon: Icon(Icons.delete))
-            ]
-          ),
+        trailing: Column(children: <Widget>[
+          IconButton(icon: Icon(Icons.filter_1)),
+          IconButton(icon: Icon(Icons.delete))
+        ]),
         onTap: () {
           Navigator.push(
               context,

@@ -1,15 +1,9 @@
-import 'dart:convert';
-
 import 'package:aurantic/auth.dart';
-import 'package:aurantic/helpers/api.dart';
 import 'package:aurantic/models/car.dart';
-import 'package:aurantic/screens/about_screen.dart';
 import 'package:aurantic/screens/observed/car_list_screen.dart';
 import 'package:aurantic/screens/observed/fault_report_screen.dart';
 import 'package:aurantic/screens/observed/observed_car_list_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:aurantic/helpers/constants.dart' as constants;
 
 class HomeScreen extends StatefulWidget {
   IAuth auth;
@@ -28,10 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
     CarListScreen(),
     FaultReportScreen(),
     UserAccountsDrawerHeader(
-      accountName: Text('name'),
-      accountEmail: Text('email'),
-      currentAccountPicture: Text('picture')
-      )
+        accountName: Text('name'),
+        accountEmail: Text('email'),
+        currentAccountPicture: Text('picture'))
   ];
   List<Car> cars = new List<Car>();
   void _signOut() async {
@@ -46,30 +39,33 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Home page'),
-      //   actions: <Widget>[
-      //     FlatButton(
-      //         child: Text('Logout',
-      //             style: TextStyle(fontSize: 17.0, color: Colors.white)),
-      //         onPressed: _signOut)
-      //   ],
-      // ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.star), title: Text('Observed')),
-          BottomNavigationBarItem(icon: Icon(Icons.list), title: Text('Lista')),
-          BottomNavigationBarItem(icon: Icon(Icons.report), title: Text('Report')),
-          BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('Profile')),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-      )
-    );
+        // appBar: AppBar(
+        //   title: Text('Home page'),
+        //   actions: <Widget>[
+        //     FlatButton(
+        //         child: Text('Logout',
+        //             style: TextStyle(fontSize: 17.0, color: Colors.white)),
+        //         onPressed: _signOut)
+        //   ],
+        // ),
+        body: Center(
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+                icon: Icon(Icons.star), title: Text('Observed')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.list), title: Text('Lista')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.report), title: Text('Report')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person), title: Text('Profile')),
+          ],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+        ));
   }
 
   void _onItemTapped(int index) {

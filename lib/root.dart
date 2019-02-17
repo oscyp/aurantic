@@ -2,6 +2,7 @@ import 'package:aurantic/auth.dart';
 import 'package:aurantic/screens/home_screen.dart';
 import 'package:aurantic/screens/login_screen.dart';
 import 'package:flutter/material.dart';
+// import 'package:permission_handler/permission_handler.dart';
 
 class RootPage extends StatefulWidget {
   final IAuth auth;
@@ -25,7 +26,7 @@ class _RootPageState extends State<RootPage> {
       setState(() {
         authStatus =
             // userId == null ? AuthStatus.NOT_SIGNED_IN : AuthStatus.SIGNED_IN;
-             AuthStatus.SIGNED_IN;
+            AuthStatus.SIGNED_IN;
       });
     });
   }
@@ -40,6 +41,10 @@ class _RootPageState extends State<RootPage> {
     setState(() {
       authStatus = AuthStatus.NOT_SIGNED_IN;
     });
+  }
+
+  void requestPermission() {
+    // final Map<PermissionGroup, PermissionStatus> permissions = PermissionHandler().requestPermissions([PermissionGroup.location]);
   }
 
   @override

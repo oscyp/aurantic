@@ -6,6 +6,7 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
+        // compile 'com.android.support:support-v4:27.1.1'
     }
 }
 
