@@ -1,10 +1,17 @@
-import 'package:aurantic/auth.dart';
-import 'package:aurantic/root.dart';
+import 'package:aurantic/app/main_page/home_page.dart';
+import 'package:aurantic/service_locator.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  setUpServiceLocator();
+  runApp(MyApp());
+} 
 
 class MyApp extends StatelessWidget {
+
+//todo: tocheck:
+  const MyApp({Key key,}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -12,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: new RootPage(auth: new Auth()),
+      home: HomePage(),
     );
   }
 }

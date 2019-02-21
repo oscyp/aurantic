@@ -1,16 +1,20 @@
+import 'package:aurantic/app/profile_page/profile_page.dart';
 import 'package:flutter/material.dart';
 
-class MainPage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _MainPageState createState() => _MainPageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MainPageState extends State<MainPage> /*with SingleTickerProviderStateMixin*/ {
+class _HomePageState extends State<HomePage> /*with SingleTickerProviderStateMixin*/ {
   final scaffoldKey =GlobalKey<ScaffoldState>();
 
   int _selectedIndex = 0;
   final _widgetOptions = [
-   ReportPage();
+   ProfilePage(),
+   ProfilePage(),
+   ProfilePage(),
+   ProfilePage()
   ];
 
   void _onItemTapped(int index) {
@@ -29,14 +33,10 @@ class _MainPageState extends State<MainPage> /*with SingleTickerProviderStateMix
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
          items: [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.star), title: Text('Observed')),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.list), title: Text('Lista')),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.report), title: Text('Report')),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person), title: Text('Profile')),
+            BottomNavigationBarItem(icon: Icon(Icons.star), title: Text('Observed')),
+            BottomNavigationBarItem(icon: Icon(Icons.list), title: Text('Lista')),
+            BottomNavigationBarItem(icon: Icon(Icons.report), title: Text('Report')),
+            BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('Profile')),
           ],
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
