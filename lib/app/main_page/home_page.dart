@@ -1,4 +1,5 @@
 import 'package:aurantic/app/profile_page/profile_page.dart';
+import 'package:aurantic/app/report_page/report_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,7 +14,7 @@ class _HomePageState extends State<HomePage> /*with SingleTickerProviderStateMix
   final _widgetOptions = [
    ProfilePage(),
    ProfilePage(),
-   ProfilePage(),
+   ReportPage(),
    ProfilePage()
   ];
 
