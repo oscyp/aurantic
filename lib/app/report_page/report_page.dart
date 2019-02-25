@@ -1,11 +1,10 @@
-import 'dart:io';
+
+import 'dart:async';
 
 import 'package:aurantic/app/report_page/image_carousel.dart';
 import 'package:aurantic/managers/report_manager.dart';
 import 'package:aurantic/service_locator.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:rx_widgets/rx_widgets.dart';
 
 class ReportPage extends StatefulWidget {
   @override
@@ -16,10 +15,23 @@ class _ReportPageState extends State<ReportPage> {
   final TextEditingController _licenseController =TextEditingController();
   final TextEditingController _messageController =TextEditingController();
 
+  StreamSubscription<List<String>> subscription;
+
+
   @override
   void initState(){
-    sl.get<ReportManager>().getNotifyReasons.execute();
+
+    subscription = sl.get<ReportManager>()
+    .getNotifyReasons
+    .listen((result) => {});
+
     super.initState();  
+  }
+
+  @override
+  void dispose(){
+    subscription?.cancel();
+    super.dispose();
   }
   Widget _licensePlate(){
       return TextField(
@@ -48,9 +60,9 @@ class _ReportPageState extends State<ReportPage> {
 
   Widget _notifyReason(){
     return Expanded(child: StreamBuilder(
-      stream: sl.get<ReportManager>().getNotifyReasons,
+      stream: sl.get<ReportManager>().getNotifyReasons.,
       builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot){
-        if (snapshot.hasData && snapshot.data.isNotEmpty) {
+        if (snapshot.hasData) {
           return DropdownButton(
             items: snapshot.data.map((item) => DropdownMenuItem(value: item, child: Text(item),)).toList(),
             onChanged: (String value) {},
