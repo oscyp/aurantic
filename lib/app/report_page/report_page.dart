@@ -5,6 +5,8 @@ import 'package:aurantic/app/report_page/image_carousel.dart';
 import 'package:aurantic/managers/report_manager.dart';
 import 'package:aurantic/service_locator.dart';
 import 'package:flutter/material.dart';
+import 'package:rx_command/rx_command.dart';
+import 'package:rx_widgets/rx_widgets.dart';
 
 class ReportPage extends StatefulWidget {
   @override
@@ -59,19 +61,22 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   Widget _notifyReason(){
-    return Expanded(child: StreamBuilder(
-      stream: sl.get<ReportManager>().getNotifyReasons.,
-      builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot){
-        if (snapshot.hasData) {
+    return Expanded(child: RxLoader<List<String>>(
+      radius: 25.0,
+      commandResults: sl.get<ReportManager>().getNotifyReasons.results,
+      dataBuilder: (context, snapshot){
           return DropdownButton(
-            items: snapshot.data.map((item) => DropdownMenuItem(value: item, child: Text(item),)).toList(),
+            items: snapshot.map((item) => DropdownMenuItem(value: item, child: Text(item),)).toList(),
             onChanged: (String value) {},
             isExpanded: true,
             );
-        }
-        else return DropdownButton(items: <DropdownMenuItem>[], onChanged: (value) {}, isExpanded: true,);
-      },
-    ));
+        },
+        placeHolderBuilder: (context) => DropdownButton(items: <DropdownMenuItem>[], onChanged: (value) {}, isExpanded: true,),
+        errorBuilder: (context, ex)  { 
+          print(ex); return Center(
+        child: Text("Error: ${ex.toString()}"));},
+      )
+    );
   }
 
   @override
