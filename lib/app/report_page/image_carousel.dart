@@ -36,7 +36,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
   }
   Widget _emptyImage(){
     return GestureDetector(
-      onTap: sl.get<ReportManager>().getNotifyReasons,//sl.get<ReportManager>().getImageFromGallery,
+      onTap: sl.get<ReportManager>().getImageFromGallery,
       child: Container(
         width: MediaQuery.of(context).size.width / 2,
         height: MediaQuery.of(context).size.width / 2,

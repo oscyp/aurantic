@@ -19,7 +19,9 @@ class ReportManager{
     
     getImageFromGallery = RxCommand.createAsyncNoParam(() => ImagePicker.pickImage(source: ImageSource.gallery));
 
-    getNotifyReasons = RxCommand.createAsyncNoParam<List<String>>(sl.get<IApiService>().getReasons);
+    getNotifyReasons = RxCommand.createSyncNoParam(() {
+      sl.get<IApiService>().getReasons();
+      });
 
     textChangedCommand
       .debounce(new Duration(milliseconds:  500))

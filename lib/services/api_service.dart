@@ -1,9 +1,11 @@
 import 'package:aurantic/domain_model/profile.dart';
+import 'package:aurantic/domain_model/report.dart';
 
 abstract class IApiService{
   Future<Profile> getUser(int id);
   Future<List<String>> searchAndGetLicenses(String searchText);
   Future<List<String>> getReasons();
+  Future<void> saveReport(Report report);
 }
 
 class ApiServiceMock implements IApiService {
@@ -34,6 +36,13 @@ class ApiServiceMock implements IApiService {
     var list = new List.from(['Reason1', 'Reason2', 'Reason3', 'Reason4', 'Reason5']);
 
     return list;
+  }
+
+  @override
+  Future<void> saveReport(Report report) {
+    print("saveReport");
+    // TODO: implement saveReport
+    return null;
   }
 
   
