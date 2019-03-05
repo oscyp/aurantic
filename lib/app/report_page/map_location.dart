@@ -4,8 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapLocation extends StatefulWidget {
   @override
-  _MapLocationState createState() =>
-      _MapLocationState();
+  _MapLocationState createState() => _MapLocationState();
 }
 
 class _MapLocationState extends State<MapLocation> {
@@ -49,8 +48,7 @@ class _MapLocationState extends State<MapLocation> {
           trackCameraPosition: true,
           initialCameraPosition:
               CameraPosition(target: DEFAULT_POSITION, zoom: DEFAULT_ZOOM),
-        )
-    );
+        ));
   }
 
   Widget _acceptButton() {
@@ -75,23 +73,20 @@ class _MapLocationState extends State<MapLocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: scaffoldKey,
-        appBar: AppBar(title: Text('miejsce na search')),
-        body: Container(
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              // crossAxisAlignment: CrossAxisAlignment.stretch,
-              // mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Expanded(child: _mapArea()),
-                _acceptButton()
-              ]),
-        ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: _add,
-        ),
-        );
+      key: scaffoldKey,
+      appBar: AppBar(title: Text('miejsce na search')),
+      body: Container(
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            // crossAxisAlignment: CrossAxisAlignment.stretch,
+            // mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[Expanded(child: _mapArea()), _acceptButton()]),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: _add,
+      ),
+    );
   }
 }

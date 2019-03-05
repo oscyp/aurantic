@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:aurantic/app/report_page/image_carousel.dart';
@@ -19,8 +18,8 @@ class ReportPage extends StatefulWidget {
 }
 
 class _ReportPageState extends State<ReportPage> {
-  final TextEditingController _licenseController =TextEditingController();
-  final TextEditingController _messageController =TextEditingController();
+  final TextEditingController _licenseController = TextEditingController();
+  final TextEditingController _messageController = TextEditingController();
   final formKey = new GlobalKey<FormState>();
   final report = new Report();
   final List<DropdownMenuItem<String>> _drawbacks = [
@@ -36,77 +35,73 @@ class _ReportPageState extends State<ReportPage> {
   StreamSubscription<List<String>> subscription;
   List<DropdownMenuItem> _notifyReasons = new List<DropdownMenuItem>();
   @override
-  void initState(){
-
-    subscription = sl.get<ReportManager>()
-    .getNotifyReasons
-    .listen((result) {
+  void initState() {
+    subscription = sl.get<ReportManager>().getNotifyReasons.listen((result) {
       setState(() {
-       _notifyReasons = result.map((x) => DropdownMenuItem(child: Text(x))); 
+        _notifyReasons = result.map((x) => DropdownMenuItem(child: Text(x)));
       });
     });
 
     sl.get<ReportManager>().getNotifyReasons.execute();
 
-
-    super.initState();  
+    super.initState();
   }
 
   @override
-  void dispose(){
+  void dispose() {
     subscription?.cancel();
     super.dispose();
   }
-  Widget _licensePlate(){
-      return TextFormField(
-                controller: _licenseController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'License plate',
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.photo_camera),
-                    onPressed: sl.get<ReportManager>().textChangedCommand,
-                  ),
-                ),
-                validator: (value) => value.isEmpty ? 'That field cannot be empty' : null,
-                onSaved: (value) => report.message = value
-              );
-  }
 
-  Widget _message(){
+  Widget _licensePlate() {
     return TextFormField(
-      controller: _messageController,
-      maxLines: 5,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: 'Message',
-      ),
-      validator: (value) => value.isEmpty ? 'That field cannot be empty' : null,
-      onSaved: (value) => report.message = value
-    );
+        controller: _licenseController,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: 'License plate',
+          suffixIcon: IconButton(
+            icon: Icon(Icons.photo_camera),
+            onPressed: sl.get<ReportManager>().textChangedCommand,
+          ),
+        ),
+        validator: (value) =>
+            value.isEmpty ? 'That field cannot be empty' : null,
+        onSaved: (value) => report.message = value);
   }
 
-  Widget _notifyReason(){
+  Widget _message() {
+    return TextFormField(
+        controller: _messageController,
+        maxLines: 5,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: 'Message',
+        ),
+        validator: (value) =>
+            value.isEmpty ? 'That field cannot be empty' : null,
+        onSaved: (value) => report.message = value);
+  }
+
+  Widget _notifyReason() {
     return FormField<String>(
-      builder: (state){
-      return DropdownButton<String>(
-      items: _drawbacks,
-      value: state.value,
-      onChanged: (value) {
-        state.didChange(value);
-      },
-      isExpanded: true,
-    );
-    
-    },
-    validator: (value) => (value == null || value.isEmpty) ? 'That field cannot be empty' : null,
-    onSaved: (value) => report.reason = value
-    );
+        builder: (state) {
+          return DropdownButton<String>(
+            items: _drawbacks,
+            value: state.value,
+            onChanged: (value) {
+              state.didChange(value);
+            },
+            isExpanded: true,
+          );
+        },
+        validator: (value) => (value == null || value.isEmpty)
+            ? 'That field cannot be empty'
+            : null,
+        onSaved: (value) => report.reason = value);
   }
 
-
-  Widget _locationLabel(){
-   return SizedBox(
+  Widget _locationLabel() {
+    return SizedBox(
       height: 50,
       width: MediaQuery.of(context).size.width,
       child: GestureDetector(
@@ -114,8 +109,7 @@ class _ReportPageState extends State<ReportPage> {
             final LatLng result = await Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        new MapLocation()));
+                    builder: (BuildContext context) => new MapLocation()));
 
             setState(() {
               markedPosition = result;
@@ -124,32 +118,32 @@ class _ReportPageState extends State<ReportPage> {
           child: markedPosition == null
               ? Text('Tap to select location')
               : Text('Lat:${markedPosition.latitude}\n' +
-                  'Long:${markedPosition.longitude}')
-      ),
+                  'Long:${markedPosition.longitude}')),
     );
   }
 
-  Widget _locationMap(){
+  Widget _locationMap() {
     return Container(
       height: 180.0,
       child: GoogleMap(
-        onMapCreated: (GoogleMapController mapController){
-          mapController.addMarker(MarkerOptions(position: mapController.cameraPosition.target));
-        },
-        myLocationEnabled: true,
-        zoomGesturesEnabled: false,
-        scrollGesturesEnabled: false,
-        tiltGesturesEnabled: false,
-        initialCameraPosition: CameraPosition(target: DEFAULT_POSITION, zoom: DEFAULT_ZOOM)
-      ),
+          onMapCreated: (GoogleMapController mapController) {
+            mapController.addMarker(
+                MarkerOptions(position: mapController.cameraPosition.target));
+          },
+          myLocationEnabled: true,
+          zoomGesturesEnabled: false,
+          scrollGesturesEnabled: false,
+          tiltGesturesEnabled: false,
+          initialCameraPosition:
+              CameraPosition(target: DEFAULT_POSITION, zoom: DEFAULT_ZOOM)),
     );
   }
 
-  Widget _submitButton(){
+  Widget _submitButton() {
     return MaterialButton(
       child: Text('Submit'),
       onPressed: () {
-        if(_isFormValid()){
+        if (_isFormValid()) {
           var report = new Report();
           sl.get<IApiService>().saveReport(report);
         }
@@ -157,8 +151,8 @@ class _ReportPageState extends State<ReportPage> {
     );
   }
 
-  bool _isFormValid(){
-    final form =formKey.currentState;
+  bool _isFormValid() {
+    final form = formKey.currentState;
     if (form.validate()) return true;
     return false;
   }
@@ -166,26 +160,25 @@ class _ReportPageState extends State<ReportPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.0),
-      child: SingleChildScrollView(
-        child: Form(
-          key: formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              _licensePlate(),
-              // Spacer(),
-              ImageCarousel(),
-              _notifyReason(),
-              _locationLabel(),
-              _locationMap(),
-              _message(),
-              _submitButton()
-            ],
+        padding: EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                _licensePlate(),
+                // Spacer(),
+                ImageCarousel(),
+                _notifyReason(),
+                _locationLabel(),
+                _locationMap(),
+                _message(),
+                _submitButton()
+              ],
+            ),
           ),
-        ),
-      ) 
-    );
+        ));
   }
 }

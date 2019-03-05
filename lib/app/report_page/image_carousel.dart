@@ -18,50 +18,45 @@ class _ImageCarouselState extends State<ImageCarousel> {
 
   StreamSubscription<File> subscription;
   @override
-  void initState(){
-    subscription = sl.get<ReportManager>()
-                    .getImageFromGallery
-                    .listen((result) {
-                      setState(() {
-                       fileImages.add(result);
-                      });
-                    }); 
+  void initState() {
+    subscription = sl.get<ReportManager>().getImageFromGallery.listen((result) {
+      setState(() {
+        fileImages.add(result);
+      });
+    });
     super.initState();
   }
 
   @override
-  void dispose(){
+  void dispose() {
     subscription?.cancel();
     super.dispose();
   }
-  Widget _emptyImage(){
+
+  Widget _emptyImage() {
     return GestureDetector(
-      onTap: sl.get<ReportManager>().getImageFromGallery,
-      child: Container(
-        width: MediaQuery.of(context).size.width / 2,
-        height: MediaQuery.of(context).size.width / 2,
-        decoration: BoxDecoration(
-          color: Colors.black12,
-          border: Border.all(color: Colors.black)
-        ),
-        child: Icon(Icons.add_a_photo),
-      )
-    );
+        onTap: sl.get<ReportManager>().getImageFromGallery,
+        child: Container(
+          width: MediaQuery.of(context).size.width / 2,
+          height: MediaQuery.of(context).size.width / 2,
+          decoration: BoxDecoration(
+              color: Colors.black12, border: Border.all(color: Colors.black)),
+          child: Icon(Icons.add_a_photo),
+        ));
   }
-  
-  List<Widget> _images(){
-    var images = fileImages.map((img) => GestureDetector(child: Image.file(img))).toList();
+
+  List<Widget> _images() {
+    var images = fileImages
+        .map((img) => GestureDetector(child: Image.file(img)))
+        .toList();
     images.add(_emptyImage());
-    
-    return images;  
+
+    return images;
   }
 
   @override
   Widget build(BuildContext context) {
-    return CarouselSlider(      
-        viewportFraction: 0.55,
-        height: 250,
-        items: _images()
-      );
+    return CarouselSlider(
+        viewportFraction: 0.55, height: 250, items: _images());
   }
 }

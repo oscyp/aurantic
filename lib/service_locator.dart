@@ -5,11 +5,11 @@ import 'package:get_it/get_it.dart';
 
 GetIt sl = new GetIt();
 
-void setUpServiceLocator(){
+void setUpServiceLocator() {
   registerServices();
   registerManagers();
 }
-  
+
 void registerServices() {
   sl.registerSingleton<IApiService>(new ApiServiceMock());
 }
@@ -18,4 +18,3 @@ void registerManagers() {
   sl.registerSingleton<ProfileManager>(new ProfileManager());
   sl.registerSingleton<ReportManager>(new ReportManager());
 }
-

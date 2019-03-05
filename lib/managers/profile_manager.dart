@@ -6,7 +6,7 @@ import 'package:rx_command/rx_command.dart';
 class ProfileManager {
   RxCommand<int, Profile> getProfileCommand;
 
-  ProfileManager(){
+  ProfileManager() {
     getProfileCommand = RxCommand.createAsync<int, Profile>(
       sl.get<IApiService>().getUser,
     );

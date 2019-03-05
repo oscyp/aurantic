@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 void main() {
   setUpServiceLocator();
   runApp(MyApp());
-} 
+}
 
 class MyApp extends StatelessWidget {
-
 //todo: tocheck:
-  const MyApp({Key key,}) : super(key: key);
+  const MyApp({
+    Key key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

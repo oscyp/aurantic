@@ -10,13 +10,12 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   @override
   void initState() {
- 
     sl.get<ProfileManager>().getProfileCommand();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,21 +24,22 @@ class _ProfilePageState extends State<ProfilePage> {
           Expanded(
             child: RxLoader<Profile>(
               radius: 25.0,
-              commandResults: sl.get<ProfileManager>().getProfileCommand.results,
+              commandResults:
+                  sl.get<ProfileManager>().getProfileCommand.results,
               dataBuilder: (context, data) => Text('Name: ${data.name}'),
               placeHolderBuilder: (context) => Center(child: Text("No Data")),
-              errorBuilder: (context, ex) => Center(child: Text("Error: ${ex.toString()}")),
+              errorBuilder: (context, ex) =>
+                  Center(child: Text("Error: ${ex.toString()}")),
             ),
           )
-        // children: <Widget>[
-        //   StreamBuilder<Profile>(
-        //     initialData: Profile('DD',''),
-        //     stream: sl.get<ProfileManager>().getProfileCommand,
-        //     builder: (context, snapshot){
-        //         return Text('Name: ${snapshot.data.name}');
-        //     },
-        //   )
-            
+          // children: <Widget>[
+          //   StreamBuilder<Profile>(
+          //     initialData: Profile('DD',''),
+          //     stream: sl.get<ProfileManager>().getProfileCommand,
+          //     builder: (context, snapshot){
+          //         return Text('Name: ${snapshot.data.name}');
+          //     },
+          //   )
         ],
       ),
     );
