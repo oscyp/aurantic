@@ -5,7 +5,7 @@ abstract class IApiService {
   Future<Profile> getUser(int id);
   Future<List<String>> searchAndGetLicenses(String searchText);
   Future<List<String>> getReasons();
-  Future<void> saveReport(Report report);
+  Future<bool> saveReport(Report report);
 }
 
 class ApiServiceMock implements IApiService {
@@ -22,7 +22,7 @@ class ApiServiceMock implements IApiService {
   Future<List<String>> searchAndGetLicenses(String searchText) async {
     Future.delayed(Duration(seconds: 2));
 
-    var list = new List.from(['SZYS463', 'SW5556', 'WW43G33']);
+    var list = new List<String>.from(['SZYS463', 'SW5556', 'WW43G33']);
 
     return list;
   }
@@ -32,15 +32,15 @@ class ApiServiceMock implements IApiService {
     Future.delayed(Duration(seconds: 2));
 
     var list =
-        new List.from(['Reason1', 'Reason2', 'Reason3', 'Reason4', 'Reason5']);
+        new List<String>.from(['Reason1', 'Reason2', 'Reason3', 'Reason4', 'Reason5']);
 
     return list;
   }
 
   @override
-  Future<void> saveReport(Report report) {
+  Future<bool> saveReport(Report report) async {
+    Future.delayed(Duration(seconds: 2));
     print("saveReport");
-    // TODO: implement saveReport
-    return null;
+    return true;
   }
 }

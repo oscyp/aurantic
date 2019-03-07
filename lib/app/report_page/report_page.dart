@@ -32,15 +32,29 @@ class _ReportPageState extends State<ReportPage> {
 
   String selectedDrawback;
   LatLng markedPosition;
-  StreamSubscription<List<String>> subscription;
-  List<DropdownMenuItem> _notifyReasons = new List<DropdownMenuItem>();
+  GoogleMapController _mapController;
+  // StreamSubscription<List<String>> subscription;
+  StreamSubscription<bool> saveReportSubscription;
   @override
   void initState() {
-    subscription = sl.get<ReportManager>().getNotifyReasons.listen((result) {
-      setState(() {
-        _notifyReasons = result.map((x) => DropdownMenuItem(child: Text(x)));
-      });
-    });
+    markedPosition =DEFAULT_POSITION;
+    // subscription = sl.get<ReportManager>().getNotifyReasons.listen((result) {
+    //   setState(() {
+    //     _notifyReasons = result.map((x) => DropdownMenuItem(child: Text(x)));
+    //   });
+    // });
+
+    saveReportSubscription = sl.get<ReportManager>().saveReport.listen((result) { setState(() {
+      if (result) {
+        formKey.currentState.reset();
+      }
+
+      final snackBar = SnackBar(
+        content: result ? Text('Reported') : Text('Something went wrong...'),
+        duration: Duration(seconds: 3),
+        );
+      Scaffold.of(context).showSnackBar(snackBar);
+    });});
 
     sl.get<ReportManager>().getNotifyReasons.execute();
 
@@ -49,29 +63,30 @@ class _ReportPageState extends State<ReportPage> {
 
   @override
   void dispose() {
-    subscription?.cancel();
+    // subscription?.cancel();
+    saveReportSubscription?.cancel();
     super.dispose();
   }
 
   Widget _licensePlate() {
     return TextFormField(
-        controller: _licenseController,
+        // controller: _licenseController,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           labelText: 'License plate',
           suffixIcon: IconButton(
             icon: Icon(Icons.photo_camera),
-            onPressed: sl.get<ReportManager>().textChangedCommand,
+            onPressed: sl<ReportManager>().textChangedCommand,
           ),
         ),
         validator: (value) =>
             value.isEmpty ? 'That field cannot be empty' : null,
-        onSaved: (value) => report.message = value);
+        onSaved: (value) => report.licensePlate = value);
   }
 
   Widget _message() {
     return TextFormField(
-        controller: _messageController,
+        // controller: _messageController,
         maxLines: 5,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
@@ -85,14 +100,23 @@ class _ReportPageState extends State<ReportPage> {
   Widget _notifyReason() {
     return FormField<String>(
         builder: (state) {
-          return DropdownButton<String>(
-            items: _drawbacks,
-            value: state.value,
-            onChanged: (value) {
-              state.didChange(value);
-            },
-            isExpanded: true,
-          );
+          return Column(children: <Widget>[
+            InputDecorator(
+                decoration:
+                    const InputDecoration(contentPadding: EdgeInsets.all(0.0)),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    items: _drawbacks,
+                    value: state.value,
+                    onChanged: (value) {
+                      state.didChange(value);
+                    },
+                    isExpanded: true,
+                  ),
+                )),
+            Text(state.hasError ? state.errorText : '',
+                style: TextStyle(color: Colors.redAccent.shade700))
+          ]);
         },
         validator: (value) => (value == null || value.isEmpty)
             ? 'That field cannot be empty'
@@ -113,6 +137,9 @@ class _ReportPageState extends State<ReportPage> {
 
             setState(() {
               markedPosition = result;
+              _mapController.clearMarkers();
+              _mapController.addMarker(MarkerOptions(position: markedPosition));
+              _mapController.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(target: markedPosition, zoom: DEFAULT_ZOOM)));
             });
           },
           child: markedPosition == null
@@ -127,15 +154,17 @@ class _ReportPageState extends State<ReportPage> {
       height: 180.0,
       child: GoogleMap(
           onMapCreated: (GoogleMapController mapController) {
-            mapController.addMarker(
-                MarkerOptions(position: mapController.cameraPosition.target));
+            _mapController = mapController;
+
+            _mapController.addMarker(
+                MarkerOptions(position: markedPosition));
           },
-          myLocationEnabled: true,
+          myLocationEnabled: false,
           zoomGesturesEnabled: false,
           scrollGesturesEnabled: false,
           tiltGesturesEnabled: false,
           initialCameraPosition:
-              CameraPosition(target: DEFAULT_POSITION, zoom: DEFAULT_ZOOM)),
+              CameraPosition(target: markedPosition, zoom: DEFAULT_ZOOM)),
     );
   }
 
@@ -145,7 +174,7 @@ class _ReportPageState extends State<ReportPage> {
       onPressed: () {
         if (_isFormValid()) {
           var report = new Report();
-          sl.get<IApiService>().saveReport(report);
+          sl.get<ReportManager>().saveReport(report);
         }
       },
     );
@@ -161,24 +190,28 @@ class _ReportPageState extends State<ReportPage> {
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
+        // child: SingleChildScrollView(
           child: Form(
             key: formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            child: ListView(
               children: <Widget>[
                 _licensePlate(),
-                // Spacer(),
+                const SizedBox(height: 7),
                 ImageCarousel(),
+                const SizedBox(height: 7),
                 _notifyReason(),
+                const SizedBox(height: 7),
                 _locationLabel(),
+                const SizedBox(height: 7),
                 _locationMap(),
+                const SizedBox(height: 7),
                 _message(),
+                const SizedBox(height: 7),
                 _submitButton()
               ],
             ),
           ),
-        ));
+        // )
+      );
   }
 }

@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:aurantic/domain_model/report.dart';
 import 'package:aurantic/service_locator.dart';
 import 'package:aurantic/services/api_service.dart';
 import 'package:rx_command/rx_command.dart';
@@ -10,7 +12,8 @@ class ReportManager {
   RxCommand<String, List<String>> udpateLicenseCommand;
   RxCommand<void, File> getImageFromGallery;
   RxCommand<void, List<String>> getNotifyReasons;
-
+  RxCommand<Report, bool> saveReport;
+  
   ReportManager() {
     textChangedCommand = RxCommand.createSync<String, String>((s) => s);
     udpateLicenseCommand = RxCommand.createAsync<String, List<String>>(
@@ -24,8 +27,12 @@ class ReportManager {
       sl.get<IApiService>().getReasons();
     });
 
+    saveReport =RxCommand.createAsync<Report, bool>((report) => sl.get<IApiService>().saveReport(report));
+
     textChangedCommand
         .debounce(new Duration(milliseconds: 500))
         .listen(udpateLicenseCommand);
+
+
   }
 }
