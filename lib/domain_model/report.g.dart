@@ -12,7 +12,8 @@ Report _$ReportFromJson(Map<String, dynamic> json) {
     ..reason = json['reason'] as String
     ..lat = (json['lat'] as num).toDouble()
     ..long = (json['long'] as num).toDouble()
-    ..message = json['message'] as String;
+    ..message = json['message'] as String
+    ..date = DateTime.parse(json['date'] as String);
 }
 
 Map<String, dynamic> _$ReportToJson(Report instance) => <String, dynamic>{
@@ -20,5 +21,6 @@ Map<String, dynamic> _$ReportToJson(Report instance) => <String, dynamic>{
       'reason': instance.reason,
       'lat': instance.lat,
       'long': instance.long,
-      'message': instance.message
+      'message': instance.message,
+      'date': instance.date.toIso8601String()
     };

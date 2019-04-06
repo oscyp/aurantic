@@ -12,7 +12,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
-    sl.get<ProfileManager>().getProfileCommand();
+    sl.get<AppManager>().getProfileCommand();
     super.initState();
   }
 
@@ -24,8 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
           Expanded(
             child: RxLoader<Profile>(
               radius: 25.0,
-              commandResults:
-                  sl.get<ProfileManager>().getProfileCommand.results,
+              commandResults: sl.get<AppManager>().getProfileCommand.results,
               dataBuilder: (context, data) => Text('Name: ${data.name}'),
               placeHolderBuilder: (context) => Center(child: Text("No Data")),
               errorBuilder: (context, ex) =>

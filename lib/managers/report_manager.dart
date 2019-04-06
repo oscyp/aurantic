@@ -13,7 +13,7 @@ class ReportManager {
   RxCommand<void, File> getImageFromGallery;
   RxCommand<void, List<String>> getNotifyReasons;
   RxCommand<Report, bool> saveReport;
-  
+
   ReportManager() {
     textChangedCommand = RxCommand.createSync<String, String>((s) => s);
     udpateLicenseCommand = RxCommand.createAsync<String, List<String>>(
@@ -27,12 +27,11 @@ class ReportManager {
       sl.get<IApiService>().getReasons();
     });
 
-    saveReport =RxCommand.createAsync<Report, bool>((report) => sl.get<IApiService>().saveReport(report));
+    saveReport = RxCommand.createAsync<Report, bool>(
+        (report) => sl.get<IApiService>().saveReport(report));
 
     textChangedCommand
         .debounce(new Duration(milliseconds: 500))
         .listen(udpateLicenseCommand);
-
-
   }
 }

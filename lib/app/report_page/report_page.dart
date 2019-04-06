@@ -37,24 +37,24 @@ class _ReportPageState extends State<ReportPage> {
   StreamSubscription<bool> saveReportSubscription;
   @override
   void initState() {
-    markedPosition =DEFAULT_POSITION;
-    // subscription = sl.get<ReportManager>().getNotifyReasons.listen((result) {
-    //   setState(() {
-    //     _notifyReasons = result.map((x) => DropdownMenuItem(child: Text(x)));
-    //   });
-    // });
+    markedPosition = DEFAULT_POSITION;
 
-    saveReportSubscription = sl.get<ReportManager>().saveReport.listen((result) { setState(() {
-      if (result) {
-        formKey.currentState.reset();
-      }
+    saveReportSubscription =
+        sl.get<ReportManager>().saveReport.listen((result) {
+      setState(() {
+        if (result) {
+          formKey.currentState.reset();
+          _licenseController.clear();
+          _messageController.clear();
+        }
 
-      final snackBar = SnackBar(
-        content: result ? Text('Reported') : Text('Something went wrong...'),
-        duration: Duration(seconds: 3),
+        final snackBar = SnackBar(
+          content: result ? Text('Reported') : Text('Something went wrong...'),
+          duration: Duration(seconds: 3),
         );
-      Scaffold.of(context).showSnackBar(snackBar);
-    });});
+        Scaffold.of(context).showSnackBar(snackBar);
+      });
+    });
 
     sl.get<ReportManager>().getNotifyReasons.execute();
 
@@ -70,7 +70,7 @@ class _ReportPageState extends State<ReportPage> {
 
   Widget _licensePlate() {
     return TextFormField(
-        // controller: _licenseController,
+        controller: _licenseController,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           labelText: 'License plate',
@@ -86,7 +86,7 @@ class _ReportPageState extends State<ReportPage> {
 
   Widget _message() {
     return TextFormField(
-        // controller: _messageController,
+        controller: _messageController,
         maxLines: 5,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
@@ -139,7 +139,8 @@ class _ReportPageState extends State<ReportPage> {
               markedPosition = result;
               _mapController.clearMarkers();
               _mapController.addMarker(MarkerOptions(position: markedPosition));
-              _mapController.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(target: markedPosition, zoom: DEFAULT_ZOOM)));
+              _mapController.moveCamera(CameraUpdate.newCameraPosition(
+                  CameraPosition(target: markedPosition, zoom: DEFAULT_ZOOM)));
             });
           },
           child: markedPosition == null
@@ -156,8 +157,7 @@ class _ReportPageState extends State<ReportPage> {
           onMapCreated: (GoogleMapController mapController) {
             _mapController = mapController;
 
-            _mapController.addMarker(
-                MarkerOptions(position: markedPosition));
+            _mapController.addMarker(MarkerOptions(position: markedPosition));
           },
           myLocationEnabled: false,
           zoomGesturesEnabled: false,
@@ -173,7 +173,8 @@ class _ReportPageState extends State<ReportPage> {
       child: Text('Submit'),
       onPressed: () {
         if (_isFormValid()) {
-          var report = new Report();
+          // var report = new Report();
+          report.date = DateTime.now();
           sl.get<ReportManager>().saveReport(report);
         }
       },
@@ -189,29 +190,29 @@ class _ReportPageState extends State<ReportPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.all(16.0),
-        // child: SingleChildScrollView(
-          child: Form(
-            key: formKey,
-            child: ListView(
-              children: <Widget>[
-                _licensePlate(),
-                const SizedBox(height: 7),
-                ImageCarousel(),
-                const SizedBox(height: 7),
-                _notifyReason(),
-                const SizedBox(height: 7),
-                _locationLabel(),
-                const SizedBox(height: 7),
-                _locationMap(),
-                const SizedBox(height: 7),
-                _message(),
-                const SizedBox(height: 7),
-                _submitButton()
-              ],
-            ),
-          ),
-        // )
-      );
+      padding: EdgeInsets.all(16.0),
+      // child: SingleChildScrollView(
+      child: Form(
+        key: formKey,
+        child: ListView(
+          children: <Widget>[
+            _licensePlate(),
+            const SizedBox(height: 7),
+            ImageCarousel(),
+            // const SizedBox(height: 7),
+            // _notifyReason(),
+            // const SizedBox(height: 7),
+            // _locationLabel(),
+            // const SizedBox(height: 7),
+            // _locationMap(),
+            const SizedBox(height: 7),
+            _message(),
+            const SizedBox(height: 7),
+            _submitButton()
+          ],
+        ),
+      ),
+      // )
+    );
   }
 }

@@ -15,6 +15,6 @@ void registerServices() {
 }
 
 void registerManagers() {
-  sl.registerSingleton<ProfileManager>(new ProfileManager());
+  sl.registerSingleton<AppManager>(new AppManager());
   sl.registerSingleton<ReportManager>(new ReportManager());
 }

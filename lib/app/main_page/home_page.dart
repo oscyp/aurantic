@@ -1,3 +1,4 @@
+import 'package:aurantic/app/observed_cars_page/observed_page.dart';
 import 'package:aurantic/app/profile_page/profile_page.dart';
 import 'package:aurantic/app/report_page/report_page.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +14,7 @@ class _HomePageState
 
   int _selectedIndex = 0;
   final _widgetOptions = [
-    ProfilePage(),
-    ProfilePage(),
+    ObservedPage(),
     ReportPage(),
     ProfilePage()
   ];
@@ -29,6 +29,7 @@ class _HomePageState
   Widget build(BuildContext context) {
     return Scaffold(
         key: scaffoldKey,
+        resizeToAvoidBottomPadding: false,
         body: Center(
           child: _widgetOptions.elementAt(_selectedIndex),
         ),
@@ -37,8 +38,6 @@ class _HomePageState
           items: [
             BottomNavigationBarItem(
                 icon: Icon(Icons.star), title: Text('Observed')),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.list), title: Text('Lista')),
             BottomNavigationBarItem(
                 icon: Icon(Icons.report), title: Text('Report')),
             BottomNavigationBarItem(
