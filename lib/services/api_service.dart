@@ -70,6 +70,7 @@ class ApiServiceMock implements IApiService {
 
   @override
   Future<bool> addLicenseToObservedCommand(String s, int i) async {
+    
 
     var index =MockData.cars.indexOf(s);
 
@@ -77,12 +78,11 @@ class ApiServiceMock implements IApiService {
     MockData.observedCars.addAll({index:0});
       
     }
-    return true;
+    return Future.delayed(Duration(seconds: 3), () => true);
   }
 
   @override
   Future<bool> removeLicenseFromObserved(String s, int i) async {
-
     var index =MockData.cars.indexOf(s);
     MockData.observedCars.remove(index);
     return true;

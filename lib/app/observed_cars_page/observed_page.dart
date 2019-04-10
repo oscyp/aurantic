@@ -13,8 +13,10 @@ class ObservedPage extends StatefulWidget {
 }
 
 class _ObservedPageState extends State<ObservedPage> {
+  TextEditingController _searchController;
   @override
   void initState() {
+    _searchController = new TextEditingController();
     sl.get<AppManager>().getLicensesCommand.execute();
     // Future.delayed(Duration(seconds: 2), () => sl.get<ProfileManager>().getObservedLicenses.execute());
 
@@ -64,36 +66,49 @@ class _ObservedPageState extends State<ObservedPage> {
   }
 
   Widget buildAddAction(){
-    return RxLoader(
-      radius: 25.0,
-      commandResults: sl.get<AppManager>().addLicenseToObservedCommand.results,
-      dataBuilder: (context, bool data) {
-        if (data == true) {
-          final snackbar =SnackBar(content: Text('Successfully added'), duration: Duration(seconds: 2),);
-          Scaffold.of(context).showSnackBar(snackbar);
+    return StreamBuilder<bool>(
+      initialData: false,
+      stream: sl.get<AppManager>().addLicenseToObservedCommand.isExecuting,
+      builder: (context, snapshot) {
+        if(snapshot.data == true){
+          return new CircularProgressIndicator();
         }
-        else{
-          final snackbar =SnackBar(content: Text('Problem with adding'), duration: Duration(seconds: 2),);
-          Scaffold.of(context).showSnackBar(snackbar);
-        }
-        return IconButton(
+        else return IconButton(
                 icon: Icon(Icons.add),
                 onPressed: sl.get<AppManager>().addLicenseToObservedCommand,
               );
           },
-      placeHolderBuilder: (context){
-        return IconButton(
-                icon: Icon(Icons.add),
-                onPressed: sl.get<AppManager>().addLicenseToObservedCommand,
-              );
-          },
+        // if (snapshot.data == true) {
+        //   final snackbar =SnackBar(content: Text('Successfully added'), duration: Duration(seconds: 2),);
+        //   Scaffold.of(context).showSnackBar(snackbar);
+        // }
+        // else{
+        //   final snackbar =SnackBar(content: Text('Problem with adding'), duration: Duration(seconds: 2),);
+        //   Scaffold.of(context).showSnackBar(snackbar);
+        // }
     );
   }
 
   Widget buildSearchAction(){
-    return IconButton(
-      icon: Icon(Icons.search),
-      onPressed: sl.get<AppManager>().searchCommand,
+    return StreamBuilder<String>(
+      initialData: null,
+      stream: sl.get<AppManager>().searchTextChangedCommand,
+      builder: (context, snapshot){
+          if(snapshot.hasData && snapshot.data.isNotEmpty){
+            return IconButton(
+              icon: Icon(Icons.clear),
+              onPressed:() { 
+                sl.get<AppManager>().searchTextChangedCommand.execute(null);
+                _searchController.clear();
+                }
+              );
+          }
+          else{
+            return IconButton(
+              icon: Icon(Icons.search),
+              onPressed: sl.get<AppManager>().searchCommand);
+          }
+      },
     );
   }
   List<Widget> buildAppBarActions(){
@@ -110,6 +125,7 @@ class _ObservedPageState extends State<ObservedPage> {
       resizeToAvoidBottomPadding: false,
         appBar: AppBar(
             title: TextField(
+              controller: _searchController,
               decoration: new InputDecoration(
                 hintText: 'Search or add to observed...'
               ),
