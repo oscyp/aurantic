@@ -71,7 +71,7 @@ class _ObservedPageState extends State<ObservedPage> {
       stream: sl.get<AppManager>().addLicenseToObservedCommand.isExecuting,
       builder: (context, snapshot) {
         if(snapshot.data == true){
-          return new CircularProgressIndicator();
+          return Container(child: const CircularProgressIndicator(backgroundColor: Colors.red,));
         }
         else return IconButton(
                 icon: Icon(Icons.add),

@@ -1,9 +1,11 @@
 import 'package:aurantic/app/report_detail_page/report_detail_page.dart';
 import 'package:aurantic/app/report_page/image_carousel.dart';
+import 'package:aurantic/domain_model/car_report_detail.dart';
 import 'package:aurantic/domain_model/report.dart';
 import 'package:aurantic/helpers/constants.dart';
 import 'package:aurantic/managers/profile_manager.dart';
 import 'package:aurantic/service_locator.dart';
+import 'package:aurantic/widgets/car_report_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:rx_widgets/rx_widgets.dart';
 
@@ -25,68 +27,14 @@ class _CarPageState extends State<CarPage> {
     super.initState();
   }
 
-  Duration whenNotified(DateTime date) {
-    var now = DateTime.now();
-    return now.difference(date);
-  }
-
-  Widget reasonTile(DateTime date) {
-    return ExpansionTile(
-      title: Row(
-        children: <Widget>[
-          Text(
-            "Adam Nawałka - ${whenNotified(date).inMinutes} mins ago",
-            style: TextStyle(color: Colors.grey, fontSize: 13.0),
-          ),
-          iconsBar()
-        ],
-      ),
-      children: <Widget>[
-        ImageCarousel(),
-        Text('t2'),
-        Text('t3'),
-      ],
-
-      // subtitle: Text('todo', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16.0),),
-      // // trailing: chooseIcon(list[index].notifications),
-      // onTap: ()  {
-      //   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => new ReportDetailPage(4)));
-      // },
-    );
-  }
-
-  Widget messageBar(Report report) {
-    return Padding(
-        padding: EdgeInsets.only(left: 17),
-        child: Row(
-          children: <Widget>[
-            iconsBar(),
-            Text(
-              report.message,
-              textAlign: TextAlign.left,
-              style: TextStyle(fontSize: 20.0),
-            ),
-          ],
-        ));
-  }
-
-  Widget iconsBar() {
-    return Row(children: <Widget>[
-      Icon(Icons.looks_two),
-      Icon(Icons.photo_camera),
-      Icon(Icons.location_on)
-    ]);
-  }
-
-  Widget buildRow(BuildContext context, int index, List<Report> list) {
+  Widget buildRow(BuildContext context, int index, List<CarReportDetail> list) {
     return Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
         color: CARD_COLOR,
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              reasonTile(list[index].date),
-              // messageBar(list[index]),
+              new CarReportTile(carReport: list[index]),
             ]));
   }
 
@@ -98,7 +46,7 @@ class _CarPageState extends State<CarPage> {
         title: Text(widget.licensePlate),
       ),
       body: Container(
-          child: RxLoader<List<Report>>(
+          child: RxLoader<List<CarReportDetail>>(
         radius: 25.0,
         commandResults:
             sl.get<AppManager>().getReportsForLicenseCommand.results,
@@ -117,3 +65,4 @@ class _CarPageState extends State<CarPage> {
     );
   }
 }
+

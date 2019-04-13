@@ -1,3 +1,4 @@
+import 'package:aurantic/domain_model/car_report_detail.dart';
 import 'package:aurantic/domain_model/display_car.dart';
 import 'package:aurantic/domain_model/observed_car.dart';
 import 'package:aurantic/domain_model/profile.dart';
@@ -9,7 +10,7 @@ abstract class IApiService {
   Future<List<String>> getReasons();
   Future<bool> saveReport(Report report);
   // Future<List<ObservedCar>> getObservedLicenseByUser(String searchText);
-  Future<List<Report>> getReportsForLicense(String plate);
+  Future<List<CarReportDetail>> getReportsForLicense(String plate);
   Future<Report> getReportById(double id);
   Future<bool> addLicenseToObservedCommand(String s, int i);
   Future<bool> removeLicenseFromObserved(String s, int i);
@@ -50,17 +51,9 @@ class ApiServiceMock implements IApiService {
     return true;
   }
 
-  // @override
-  // Future<List<ObservedCar>> getObservedLicenseByUser(String searchText) {
-  //   var list = MockData.observedCars;
-
-
-  //   return Future.delayed(Duration(seconds: 2), () => list);
-  // }
-
   @override
-  Future<List<Report>> getReportsForLicense(String plate) async {
-    return MockData.reports;
+  Future<List<CarReportDetail>> getReportsForLicense(String plate) async {
+    return MockData.reportsDetails;
   }
 
   @override
@@ -75,8 +68,10 @@ class ApiServiceMock implements IApiService {
     var index =MockData.cars.indexOf(s);
 
     if (!MockData.observedCars.containsKey(index)) {
-    MockData.observedCars.addAll({index:0});
-      
+      MockData.cars.add(s);
+      var idx = MockData.cars.lastIndexOf(s);
+      var oIdx = MockData.observedCars.keys.last + 1;
+      MockData.observedCars.addAll({idx:0});
     }
     return Future.delayed(Duration(seconds: 3), () => true);
   }
@@ -166,5 +161,13 @@ class MockData {
         'jakas tam wiadomosc 5', new DateTime(2019, 08, 3, 15, 11, 0, 0)),
     new Report.full(6, 50.049683, 19.944544, 'SZYS463', 'reason2',
         'jakas tam wiadomosc 6', new DateTime(2019, 09, 5, 14, 12, 0, 0)),
+  ]);
+
+   static List<CarReportDetail> reportsDetails = new List<CarReportDetail>.from([
+    new CarReportDetail.full('Adam Nawałka', new DateTime(2019, 04, 03, 15, 11, 0, 0), "Rozbite światło!", null, null),
+    new CarReportDetail.full('Andzrej Grabowski', new DateTime(2019, 04, 11, 13, 11, 0, 0), "Maska otwarta!", null, null),
+    new CarReportDetail.full('Marian Paździoch', new DateTime(2019, 04, 12, 11, 11, 0, 0), "Bagażnik otwarty!", null, null),
+    new CarReportDetail.full('Helena Kiepska', new DateTime(2019, 04, 05, 13, 11, 0, 0), "Przebita opona!", null, null),
+    
   ]);
 }

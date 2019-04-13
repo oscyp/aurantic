@@ -37,11 +37,11 @@ class _HomePageState
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(
-                icon: Icon(Icons.star), title: Text('Observed')),
+                icon: Icon(Icons.list), title: Text('list')),
             BottomNavigationBarItem(
-                icon: Icon(Icons.report), title: Text('Report')),
+                icon: Icon(Icons.report), title: Text('report')),
             BottomNavigationBarItem(
-                icon: Icon(Icons.person), title: Text('Profile')),
+                icon: Icon(Icons.person), title: Text('profile')),
           ],
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,

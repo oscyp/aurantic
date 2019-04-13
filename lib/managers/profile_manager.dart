@@ -1,3 +1,4 @@
+import 'package:aurantic/domain_model/car_report_detail.dart';
 import 'package:aurantic/domain_model/display_car.dart';
 import 'package:aurantic/domain_model/observed_car.dart';
 import 'package:aurantic/domain_model/profile.dart';
@@ -10,7 +11,7 @@ class AppManager {
   RxCommand<int, Profile> getProfileCommand;
   // RxCommand<String, List<DisplayCar>> getObservedLicensesCommand;
   RxCommand<String, String> searchTextChangedCommand;
-  RxCommand<String, List<Report>> getReportsForLicenseCommand;
+  RxCommand<String, List<CarReportDetail>> getReportsForLicenseCommand;
   RxCommand<double, Report> getReportCommand;
   RxCommand<String, bool> addLicenseToObservedCommand;
   RxCommand searchCommand;
@@ -33,7 +34,7 @@ class AppManager {
 
     searchTextChangedCommand = RxCommand.createSync<String, String>((s) => s);
     
-    getReportsForLicenseCommand = RxCommand.createAsync<String, List<Report>>(
+    getReportsForLicenseCommand = RxCommand.createAsync<String, List<CarReportDetail>>(
         (plate) => sl.get<IApiService>().getReportsForLicense(plate));
     
     getReportCommand = RxCommand.createAsync<double, Report>(
@@ -51,7 +52,7 @@ class AppManager {
     //listeners
 
     addLicenseToObservedCommand.listen((onData) => searchTextChangedCommand.execute(null));
-
+    addLicenseToObservedCommand.listen((onData) => () => getLicensesCommand.execute());
     removeLicenseFromObservedCommand.listen((d) => getLicensesCommand.execute());
 
     searchTextChangedCommand
