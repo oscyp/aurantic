@@ -6,7 +6,7 @@ class CarReportDetail{
   String userName;
   DateTime notificationDate;
   String message;
-  List<File> images;
+  List<String> images;
   LatLng location;
 
   CarReportDetail.full(this.userName, this.notificationDate, this.message, this.images, this.location);

@@ -11,7 +11,7 @@ class Report {
   double long;
   String message;
   DateTime date;
-
+  List<String> files;
   Report();
   Report.full(this.id, this.lat, this.long, this.licensePlate, this.reason,
       this.message, this.date);

@@ -5,25 +5,31 @@ import 'package:aurantic/managers/report_manager.dart';
 import 'package:aurantic/service_locator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:rx_command/rx_command.dart';
-import 'package:rx_widgets/rx_widgets.dart';
 
 class ImageCarousel extends StatefulWidget {
+  final List<Image> images;
+  final bool showEmptyImage;
+  ImageCarousel(this.showEmptyImage, {this.images});
   @override
   _ImageCarouselState createState() => _ImageCarouselState();
 }
 
 class _ImageCarouselState extends State<ImageCarousel> {
-  List<File> fileImages = new List<File>();
+  List<Image> fileImages = new List<Image>();
 
   StreamSubscription<File> subscription;
   @override
   void initState() {
-    subscription = sl.get<ReportManager>().getImageFromGallery.listen((result) {
-      setState(() {
-        fileImages.add(result);
-      });
+    subscription = sl.get<ReportManager>()
+    .getImageFromGallery
+    .listen((file) {
+      if (file != null){
+        setState(() {
+        fileImages.add(Image.file(file));
+        });
+      }
     });
+    
     super.initState();
   }
 
@@ -47,9 +53,17 @@ class _ImageCarouselState extends State<ImageCarousel> {
 
   List<Widget> _images() {
     var images = fileImages
-        .map((img) => GestureDetector(child: Image.file(img)))
+        .map((img) => GestureDetector(child: img))
         .toList();
-    images.add(_emptyImage());
+
+    if(widget.images != null){
+      images.addAll(widget.images.map((x) => GestureDetector(child: x)));
+    }
+
+    if (widget.showEmptyImage)
+    {
+      images.add(_emptyImage());
+    }
 
     return images;
   }

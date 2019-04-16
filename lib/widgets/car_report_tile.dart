@@ -1,6 +1,6 @@
-import 'package:aurantic/app/report_page/image_carousel.dart';
 import 'package:aurantic/domain_model/car_report_detail.dart';
-import 'package:aurantic/domain_model/report.dart';
+import 'dart:convert';
+import 'package:aurantic/widgets/image_carousel.dart';
 import 'package:flutter/material.dart';
 
 class CarReportTile extends StatelessWidget {
@@ -52,7 +52,10 @@ class CarReportTile extends StatelessWidget {
   }
 
   Widget showImageCarouselIfImagesAttached(){
-    return (carReport.images != null && carReport.images.length > 0) ? ImageCarousel() : null;
+    return (carReport.images != null && carReport.images.length > 0) 
+      ? ImageCarousel(false,
+       images: carReport.images.map((x) => Image.memory(base64Decode(x))).toList()) 
+      : null;
   }
 
   @override
@@ -62,19 +65,20 @@ class CarReportTile extends StatelessWidget {
         children: <Widget>[
           Text(
             "${carReport.userName} - ${getMinutesWhenReportWasCreated()} mins ago",
-            style: TextStyle(color: Colors.grey, fontSize: 13.0),
+            style: TextStyle(color: Colors.grey, fontSize: 16.0),
           ),
           iconsBar()
         ],
       ),
       children: <Widget>[
         Container(
+          padding: EdgeInsets.only(left: 16.0, bottom: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
              children: <Widget>[
-              Text(carReport.message, textAlign: TextAlign.start,),
-            showImageCarouselIfImagesAttached(),
+              Text(carReport.message, textAlign: TextAlign.start, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
+              showImageCarouselIfImagesAttached(),
             ].where((x) => x != null).toList(),
           ),
         )

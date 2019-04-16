@@ -1,16 +1,14 @@
 import 'dart:async';
-
-import 'package:aurantic/app/report_page/image_carousel.dart';
+import 'dart:convert';
+import 'dart:io';
 import 'package:aurantic/app/report_page/map_location.dart';
 import 'package:aurantic/domain_model/report.dart';
 import 'package:aurantic/helpers/constants.dart';
 import 'package:aurantic/managers/report_manager.dart';
 import 'package:aurantic/service_locator.dart';
-import 'package:aurantic/services/api_service.dart';
+import 'package:aurantic/widgets/image_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:rx_command/rx_command.dart';
-import 'package:rx_widgets/rx_widgets.dart';
 
 class ReportPage extends StatefulWidget {
   @override
@@ -33,8 +31,10 @@ class _ReportPageState extends State<ReportPage> {
   String selectedDrawback;
   LatLng markedPosition;
   GoogleMapController _mapController;
-  // StreamSubscription<List<String>> subscription;
   StreamSubscription<bool> saveReportSubscription;
+  StreamSubscription<File> subscription;
+  List<File> fileImages = new List<File>();
+
   @override
   void initState() {
     markedPosition = DEFAULT_POSITION;
@@ -56,6 +56,14 @@ class _ReportPageState extends State<ReportPage> {
       });
     });
 
+    subscription = sl.get<ReportManager>().getImageFromGallery.listen((file) async {
+      if (file != null){
+        setState(() {
+          fileImages.add(file);
+        });
+      }
+  });
+
     sl.get<ReportManager>().getNotifyReasons.execute();
 
     super.initState();
@@ -63,7 +71,7 @@ class _ReportPageState extends State<ReportPage> {
 
   @override
   void dispose() {
-    // subscription?.cancel();
+    subscription?.cancel();
     saveReportSubscription?.cancel();
     super.dispose();
   }
@@ -173,8 +181,17 @@ class _ReportPageState extends State<ReportPage> {
       child: Text('Submit'),
       onPressed: () {
         if (_isFormValid()) {
-          // var report = new Report();
+          
           report.date = DateTime.now();
+          report.files = fileImages.map((x) {
+          try{
+            return base64Encode(x.readAsBytesSync());
+
+          }
+          catch(e){
+            print(e);
+          }}
+          ).toList();
           sl.get<ReportManager>().saveReport(report);
         }
       },
@@ -183,7 +200,9 @@ class _ReportPageState extends State<ReportPage> {
 
   bool _isFormValid() {
     final form = formKey.currentState;
-    if (form.validate()) return true;
+    if (form.validate()){
+      form.save();
+       return true;}
     return false;
   }
 
@@ -198,7 +217,7 @@ class _ReportPageState extends State<ReportPage> {
           children: <Widget>[
             _licensePlate(),
             const SizedBox(height: 7),
-            ImageCarousel(),
+            ImageCarousel(true),
             // const SizedBox(height: 7),
             // _notifyReason(),
             // const SizedBox(height: 7),

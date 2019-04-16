@@ -1,8 +1,8 @@
-import 'package:aurantic/app/report_page/image_carousel.dart';
 import 'package:aurantic/domain_model/report.dart';
 import 'package:aurantic/helpers/constants.dart';
 import 'package:aurantic/managers/profile_manager.dart';
 import 'package:aurantic/service_locator.dart';
+import 'package:aurantic/widgets/image_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rx_widgets/rx_widgets.dart';
@@ -71,7 +71,7 @@ class _ReportDetailPageState extends State<ReportDetailPage> {
             'Photos',
             style: TextStyle(color: Colors.grey, fontSize: 15.0),
           ),
-          ImageCarousel()
+          ImageCarousel(false)
         ]);
   }
 

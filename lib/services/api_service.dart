@@ -3,6 +3,7 @@ import 'package:aurantic/domain_model/display_car.dart';
 import 'package:aurantic/domain_model/observed_car.dart';
 import 'package:aurantic/domain_model/profile.dart';
 import 'package:aurantic/domain_model/report.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 abstract class IApiService {
   Future<Profile> getUser(int id);
@@ -46,7 +47,14 @@ class ApiServiceMock implements IApiService {
 
   @override
   Future<bool> saveReport(Report report) async {
-    Future.delayed(Duration(seconds: 2));
+    try{
+    var reportDetail = new CarReportDetail.full("Zbyszek Holinoga", report.date, report.message, report.files, null);
+    MockData.reportsDetails.add(reportDetail);
+
+    }
+    catch(e){
+      print(e);
+    }
     print("saveReport");
     return true;
   }
@@ -164,7 +172,7 @@ class MockData {
   ]);
 
    static List<CarReportDetail> reportsDetails = new List<CarReportDetail>.from([
-    new CarReportDetail.full('Adam Nawałka', new DateTime(2019, 04, 03, 15, 11, 0, 0), "Rozbite światło!", null, null),
+    new CarReportDetail.full('Adam Nawałka', new DateTime(2019, 04, 03, 15, 11, 0, 0), "Rozbite światło! Do tego coś Ci ten tłumik burczy leszczu jeden, co na dieslu jeździsz. Huncwocie jeden, Ty!", null, null),
     new CarReportDetail.full('Andzrej Grabowski', new DateTime(2019, 04, 11, 13, 11, 0, 0), "Maska otwarta!", null, null),
     new CarReportDetail.full('Marian Paździoch', new DateTime(2019, 04, 12, 11, 11, 0, 0), "Bagażnik otwarty!", null, null),
     new CarReportDetail.full('Helena Kiepska', new DateTime(2019, 04, 05, 13, 11, 0, 0), "Przebita opona!", null, null),

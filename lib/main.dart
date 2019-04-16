@@ -1,4 +1,5 @@
 import 'package:aurantic/app/main_page/home_page.dart';
+import 'package:aurantic/helpers/constants.dart';
 import 'package:aurantic/service_locator.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey,
+        accentColor: Colors.yellow
+        // accentColor: CARD_COLOR
       ),
       home: HomePage(),
     );

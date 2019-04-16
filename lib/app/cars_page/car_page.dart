@@ -1,7 +1,4 @@
-import 'package:aurantic/app/report_detail_page/report_detail_page.dart';
-import 'package:aurantic/app/report_page/image_carousel.dart';
 import 'package:aurantic/domain_model/car_report_detail.dart';
-import 'package:aurantic/domain_model/report.dart';
 import 'package:aurantic/helpers/constants.dart';
 import 'package:aurantic/managers/profile_manager.dart';
 import 'package:aurantic/service_locator.dart';
