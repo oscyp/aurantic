@@ -1,3 +1,4 @@
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'report.g.dart';
@@ -7,13 +8,14 @@ class Report {
   double id;
   String licensePlate;
   String reason;
-  double lat;
-  double long;
   String message;
   DateTime date;
   List<String> files;
+  double latitude;
+  double longitude;
+
   Report();
-  Report.full(this.id, this.lat, this.long, this.licensePlate, this.reason,
+  Report.full(this.id, this.latitude, this.longitude, this.licensePlate, this.reason,
       this.message, this.date);
   factory Report.fromJson(Map<String, dynamic> json) => _$ReportFromJson(json);
 

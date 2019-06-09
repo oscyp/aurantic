@@ -1,4 +1,4 @@
-import 'package:aurantic/app/observed_cars_page/observed_page.dart';
+import 'package:aurantic/app/cars_lists_page/cars_list_page.dart';
 import 'package:aurantic/app/profile_page/profile_page.dart';
 import 'package:aurantic/app/report_page/report_page.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ class _HomePageState
 
   int _selectedIndex = 0;
   final _widgetOptions = [
-    ObservedPage(),
+    CarsListPage(),
     ReportPage(),
     ProfilePage()
   ];

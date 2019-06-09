@@ -1,5 +1,4 @@
 import 'package:aurantic/app/main_page/home_page.dart';
-import 'package:aurantic/helpers/constants.dart';
 import 'package:aurantic/service_locator.dart';
 import 'package:flutter/material.dart';
 

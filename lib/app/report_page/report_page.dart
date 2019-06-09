@@ -89,13 +89,15 @@ class _ReportPageState extends State<ReportPage> {
         ),
         validator: (value) =>
             value.isEmpty ? 'That field cannot be empty' : null,
-        onSaved: (value) => report.licensePlate = value);
+        onSaved: (value) => report.licensePlate = value.toUpperCase());
   }
 
   Widget _message() {
     return TextFormField(
         controller: _messageController,
-        maxLines: 5,
+        keyboardType: TextInputType.multiline,
+        textInputAction: TextInputAction.done,
+        maxLines: 4,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           labelText: 'Message',
@@ -183,6 +185,8 @@ class _ReportPageState extends State<ReportPage> {
         if (_isFormValid()) {
           
           report.date = DateTime.now();
+          report.longitude = markedPosition.longitude;
+          report.latitude = markedPosition.latitude;
           report.files = fileImages.map((x) {
           try{
             return base64Encode(x.readAsBytesSync());
@@ -220,10 +224,10 @@ class _ReportPageState extends State<ReportPage> {
             ImageCarousel(true),
             // const SizedBox(height: 7),
             // _notifyReason(),
-            // const SizedBox(height: 7),
-            // _locationLabel(),
-            // const SizedBox(height: 7),
-            // _locationMap(),
+            const SizedBox(height: 7),
+            _locationLabel(),
+            const SizedBox(height: 7),
+            _locationMap(),
             const SizedBox(height: 7),
             _message(),
             const SizedBox(height: 7),

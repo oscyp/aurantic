@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:aurantic/domain_model/report.dart';
@@ -17,18 +16,18 @@ class ReportManager {
   ReportManager() {
     textChangedCommand = RxCommand.createSync<String, String>((s) => s);
     udpateLicenseCommand = RxCommand.createAsync<String, List<String>>(
-      sl.get<IApiService>().searchAndGetLicenses,
+      sl.get<IDatabaseService>().searchAndGetLicenses,
     );
 
     getImageFromGallery = RxCommand.createAsyncNoParam(
         () => ImagePicker.pickImage(source: ImageSource.gallery));
 
     getNotifyReasons = RxCommand.createSyncNoParam(() {
-      sl.get<IApiService>().getReasons();
+      sl.get<IDatabaseService>().getReasons();
     });
 
     saveReport = RxCommand.createAsync<Report, bool>(
-        (report) => sl.get<IApiService>().saveReport(report));
+        (report) => sl.get<IDatabaseService>().saveReport(report));
 
     textChangedCommand
         .debounce(new Duration(milliseconds: 500))

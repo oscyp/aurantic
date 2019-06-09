@@ -1,24 +1,21 @@
 import 'package:aurantic/domain_model/car_report_detail.dart';
 import 'package:aurantic/domain_model/display_car.dart';
-import 'package:aurantic/domain_model/observed_car.dart';
 import 'package:aurantic/domain_model/profile.dart';
 import 'package:aurantic/domain_model/report.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-abstract class IApiService {
+abstract class IDatabaseService {
   Future<Profile> getUser(int id);
   Future<List<String>> searchAndGetLicenses(String searchText);
   Future<List<String>> getReasons();
   Future<bool> saveReport(Report report);
-  // Future<List<ObservedCar>> getObservedLicenseByUser(String searchText);
   Future<List<CarReportDetail>> getReportsForLicense(String plate);
-  Future<Report> getReportById(double id);
-  Future<bool> addLicenseToObservedCommand(String s, int i);
+  Future<bool> addToFavorites(String s, int i);
   Future<bool> removeLicenseFromObserved(String s, int i);
-  Future<List<DisplayCar>> getLicenses(String searchText, String user);
+  Future<List<DisplayCar>> getLicenses(String searchText, int userId);
 }
 
-class ApiServiceMock implements IApiService {
+class DatabaseMock implements IDatabaseService {
   @override
   Future<Profile> getUser(int id) async {
     Future.delayed(Duration(seconds: 2));
@@ -70,7 +67,7 @@ class ApiServiceMock implements IApiService {
   }
 
   @override
-  Future<bool> addLicenseToObservedCommand(String s, int i) async {
+  Future<bool> addToFavorites(String s, int i) async {
     
 
     var index =MockData.cars.indexOf(s);
@@ -92,12 +89,12 @@ class ApiServiceMock implements IApiService {
   }
 
   @override
-  Future<List<DisplayCar>> getLicenses(String searchText, String user) async {
+  Future<List<DisplayCar>> getLicenses(String searchText, int user) async {
     
     var list = MockData.cars;
     var result = new List<DisplayCar>();
     if (searchText != null && searchText.isNotEmpty) {
-      list = list.where((x) => x.contains(searchText)).toList();
+      list = list.where((x) => x.toUpperCase().contains(searchText.toUpperCase())).toList();
     }
     
     if (user!=null) {
@@ -172,10 +169,14 @@ class MockData {
   ]);
 
    static List<CarReportDetail> reportsDetails = new List<CarReportDetail>.from([
-    new CarReportDetail.full('Adam Nawałka', new DateTime(2019, 04, 03, 15, 11, 0, 0), "Rozbite światło! Do tego coś Ci ten tłumik burczy leszczu jeden, co na dieslu jeździsz. Huncwocie jeden, Ty!", null, null),
-    new CarReportDetail.full('Andzrej Grabowski', new DateTime(2019, 04, 11, 13, 11, 0, 0), "Maska otwarta!", null, null),
-    new CarReportDetail.full('Marian Paździoch', new DateTime(2019, 04, 12, 11, 11, 0, 0), "Bagażnik otwarty!", null, null),
-    new CarReportDetail.full('Helena Kiepska', new DateTime(2019, 04, 05, 13, 11, 0, 0), "Przebita opona!", null, null),
+    // new CarReportDetail.full('Adam Nawałka', new DateTime(2019, 04, 03, 15, 11, 0, 0), "Rozbite światło! Do tego coś Ci ten tłumik burczy leszczu jeden, co na dieslu jeździsz. Huncwocie jeden, Ty!", null, null),
+    // new CarReportDetail.full('Andzrej Grabowski', new DateTime(2019, 04, 11, 13, 11, 0, 0), "Maska otwarta!", null, null),
+    // new CarReportDetail.full('Marian Paździoch', new DateTime(2019, 04, 12, 11, 11, 0, 0), "Bagażnik otwarty!", null, null),
+    // new CarReportDetail.full('Helena Kiepska', new DateTime(2019, 04, 05, 13, 11, 0, 0), "Przebita opona!", null, null),
+    new CarReportDetail.full('A. Nawałka', new DateTime(2019, 04, 03, 15, 11, 0, 0), "Rozbite światło! Do tego coś Ci ten tłumik burczy leszczu jeden, co na dieslu jeździsz. Huncwocie jeden, Ty!", null, null),
+    new CarReportDetail.full('A. Grabowski', new DateTime(2019, 04, 11, 13, 11, 0, 0), "Maska otwarta!", null, null),
+    new CarReportDetail.full('M. Paździoch', new DateTime(2019, 04, 12, 11, 11, 0, 0), "Bagażnik otwarty!", null, null),
+    new CarReportDetail.full('H. Kiepska', new DateTime(2019, 04, 05, 13, 11, 0, 0), "Przebita opona!", null, null),
     
   ]);
 }

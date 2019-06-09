@@ -1,5 +1,5 @@
 import 'package:aurantic/domain_model/profile.dart';
-import 'package:aurantic/managers/profile_manager.dart';
+import 'package:aurantic/managers/app_manager.dart';
 import 'package:aurantic/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:rx_widgets/rx_widgets.dart';

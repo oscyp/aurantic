@@ -1,7 +1,9 @@
 import 'package:aurantic/domain_model/car_report_detail.dart';
+import 'package:aurantic/helpers/constants.dart';
 import 'dart:convert';
 import 'package:aurantic/widgets/image_carousel.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class CarReportTile extends StatelessWidget {
   const CarReportTile({
@@ -41,6 +43,28 @@ class CarReportTile extends StatelessWidget {
   Icon getMessageIconIfReported(){
     return (carReport.message != null && carReport.message.isNotEmpty) ? Icon(Icons.message) : null;
   }
+
+    Widget showMapIfPositionIsSet() {
+      
+    return carReport.location != null 
+    ? Container(
+      height: 180.0,
+      child: GoogleMap(
+        onMapCreated: (GoogleMapController mapController) {
+          // _mapController = mapController;
+
+          // _mapController.addMarker(
+          //     MarkerOptions(position: markedPosition));
+        },
+        myLocationEnabled: false,
+        zoomGesturesEnabled: false,
+        scrollGesturesEnabled: false,
+        tiltGesturesEnabled: false,
+        initialCameraPosition:
+            CameraPosition(target: carReport.location, zoom: DEFAULT_ZOOM)),
+    ) 
+    : null;
+  }
   
   Widget iconsBar() {
     return Row(children: <Widget>[
@@ -79,6 +103,7 @@ class CarReportTile extends StatelessWidget {
              children: <Widget>[
               Text(carReport.message, textAlign: TextAlign.start, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
               showImageCarouselIfImagesAttached(),
+              showMapIfPositionIsSet(),
             ].where((x) => x != null).toList(),
           ),
         )

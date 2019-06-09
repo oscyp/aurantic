@@ -8,19 +8,23 @@ part of 'report.dart';
 
 Report _$ReportFromJson(Map<String, dynamic> json) {
   return Report()
+    ..id = (json['id'] as num).toDouble()
     ..licensePlate = json['licensePlate'] as String
     ..reason = json['reason'] as String
-    ..lat = (json['lat'] as num).toDouble()
-    ..long = (json['long'] as num).toDouble()
     ..message = json['message'] as String
-    ..date = DateTime.parse(json['date'] as String);
+    ..date = DateTime.parse(json['date'] as String)
+    ..files = (json['files'] as List).map((e) => e as String).toList()
+    ..latitude = (json['latitude'] as num).toDouble()
+    ..longitude = (json['longitude'] as num).toDouble();
 }
 
 Map<String, dynamic> _$ReportToJson(Report instance) => <String, dynamic>{
+      'id': instance.id,
       'licensePlate': instance.licensePlate,
       'reason': instance.reason,
-      'lat': instance.lat,
-      'long': instance.long,
       'message': instance.message,
-      'date': instance.date.toIso8601String()
+      'date': instance.date.toIso8601String(),
+      'files': instance.files,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude
     };

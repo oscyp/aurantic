@@ -1,6 +1,6 @@
 import 'package:aurantic/domain_model/car_report_detail.dart';
 import 'package:aurantic/helpers/constants.dart';
-import 'package:aurantic/managers/profile_manager.dart';
+import 'package:aurantic/managers/app_manager.dart';
 import 'package:aurantic/service_locator.dart';
 import 'package:aurantic/widgets/car_report_tile.dart';
 import 'package:flutter/material.dart';
